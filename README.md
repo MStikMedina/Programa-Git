@@ -77,5 +77,5 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py cargar_demo     # datos de ejemplo
 python manage.py runserver       # abrir http://localhost:8000/movil/
-python manage.py test            # 66 pruebas
+python manage.py test            # 67 pruebas
 ```
