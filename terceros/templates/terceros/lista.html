@@ -1,0 +1,36 @@
+{% extends 'terceros/base.html' %}
+{% block contenido %}
+  <h1>Terceros</h1>
+
+  {# Formulario de búsqueda: método GET, los filtros viajan en la URL. #}
+  <form class="filtro" method="get" action="{% url 'terceros:lista' %}">
+    <input type="text" name="q" value="{{ q }}" placeholder="Buscar por nombre o documento">
+    <label style="margin:0;font-weight:normal">
+      <input type="checkbox" name="activos" value="1" {% if solo_activos %}checked{% endif %}> Solo activos
+    </label>
+    <button class="btn" type="submit">Buscar</button>
+    <a class="btn" href="{% url 'terceros:crear' %}">Nuevo tercero</a>
+  </form>
+
+  <table>
+    <thead>
+      <tr><th>Nombre</th><th>Documento</th><th>Teléfono</th><th>Estado</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+      {% for tercero in terceros %}
+        <tr>
+          <td>{{ tercero.nombre }}</td>
+          <td>{{ tercero.documento|default:"—" }}</td>
+          <td>{{ tercero.telefono|default:"—" }}</td>
+          <td>{% if tercero.activo %}Activo{% else %}Inactivo{% endif %}</td>
+          <td>
+            <a class="btn" href="{% url 'terceros:editar' tercero.id %}">Editar</a>
+            <a class="btn btn-peligro" href="{% url 'terceros:eliminar' tercero.id %}">Eliminar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">No hay terceros que coincidan.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

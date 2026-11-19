@@ -1,0 +1,28 @@
+{% extends 'terceros/base.html' %}
+{% block titulo %}{{ titulo }}{% endblock %}
+{% block contenido %}
+  <h1>{{ titulo }}</h1>
+
+  {# Formulario de envío: método POST con token CSRF. #}
+  <form method="post">
+    {% csrf_token %}
+    <label for="nombre">Nombre *</label>
+    <input type="text" id="nombre" name="nombre" maxlength="200" value="{{ datos.nombre }}" required>
+
+    <label for="documento">Documento</label>
+    <input type="text" id="documento" name="documento" maxlength="50" value="{{ datos.documento }}">
+
+    <label for="telefono">Teléfono</label>
+    <input type="text" id="telefono" name="telefono" maxlength="50" value="{{ datos.telefono }}">
+
+    <label for="notas">Notas</label>
+    <textarea id="notas" name="notas" rows="3">{{ datos.notas }}</textarea>
+
+    <label><input type="checkbox" name="activo" {% if datos.activo %}checked{% endif %}> Activo</label>
+
+    <p>
+      <button class="btn" type="submit">Guardar</button>
+      <a class="btn btn-gris" href="{% url 'terceros:lista' %}">Cancelar</a>
+    </p>
+  </form>
+{% endblock %}
