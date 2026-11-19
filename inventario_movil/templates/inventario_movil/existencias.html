@@ -1,0 +1,28 @@
+{% extends 'inventario_movil/base_movil.html' %}
+{% block titulo %}Existencias{% endblock %}
+{% block encabezado %}Existencias{% endblock %}
+{% block contenido %}
+<form method="get" class="filtros">
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar categoría o referencia" maxlength="60">
+  <select name="bodega">
+    <option value="">Todas las bodegas</option>
+    {% for bodega in bodegas %}
+      <option value="{{ bodega.pk }}" {% if bodega_id == bodega.pk|stringformat:'s' %}selected{% endif %}>{{ bodega.nombre }}</option>
+    {% endfor %}
+  </select>
+  <label><input type="checkbox" name="bajo" value="1" {% if solo_bajo %}checked{% endif %} style="width:auto"> Solo bajo mínimo</label>
+  <button class="boton" type="submit">Filtrar</button>
+</form>
+{% for fila in filas %}
+  <a class="tarjeta" href="{% url 'inventario_movil:kardex' fila.articulo.pk %}">
+    <div>
+      <h3>{{ fila.articulo.nombre }}</h3>
+      <small>Mínimo: {{ fila.articulo.stock_minimo }}</small>
+      {% if fila.bajo_minimo %}<span class="etiqueta-alerta">Bajo mínimo</span>{% endif %}
+    </div>
+    <div class="cantidad {% if fila.bajo_minimo %}alerta{% endif %}">{{ fila.total }}</div>
+  </a>
+{% empty %}
+  <p>No hay artículos que coincidan con la búsqueda.</p>
+{% endfor %}
+{% endblock %}

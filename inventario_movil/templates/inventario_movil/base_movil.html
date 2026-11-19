@@ -1,0 +1,34 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  {# El viewport hace que la página use el ancho real del celular #}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d6efd">
+  <link rel="manifest" href="{% url 'inventario_movil:manifest' %}">
+  <link rel="icon" href="{% static 'inventario_movil/icono.svg' %}">
+  <link rel="stylesheet" href="{% static 'inventario_movil/app.css' %}">
+  <title>{% block titulo %}Inventario móvil{% endblock %} · AAMO</title>
+</head>
+<body>
+  <header class="barra-superior">{% block encabezado %}Inventario móvil{% endblock %}</header>
+  <main>
+    {% for mensaje in messages %}
+      <div class="mensaje {{ mensaje.tags }}">{{ mensaje }}</div>
+    {% endfor %}
+    {% block contenido %}{% endblock %}
+  </main>
+  <nav class="barra-inferior">
+    <a href="{% url 'inventario_movil:existencias' %}" class="{% if seccion == 'existencias' %}activa{% endif %}"><span>📦</span>Existencias</a>
+    <a href="{% url 'inventario_movil:entrada' %}" class="{% if seccion == 'entrada' %}activa{% endif %}"><span>⬇️</span>Entrada</a>
+    <a href="{% url 'inventario_movil:salida' %}" class="{% if seccion == 'salida' %}activa{% endif %}"><span>⬆️</span>Salida</a>
+    <a href="{% url 'inventario_movil:articulo_nuevo' %}" class="{% if seccion == 'articulo' %}activa{% endif %}"><span>➕</span>Artículo</a>
+  </nav>
+  <script>
+    // Registra el service worker para poder instalar la pantalla en el celular.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register("{% url 'inventario_movil:sw' %}").catch(function () {});
+    }
+  </script>
+</body>
+</html>
