@@ -62,7 +62,9 @@ class MovimientoForm(forms.Form):
             'min_value': "La cantidad debe ser mayor que cero.",
             'max_value': f"La cantidad no puede superar {CANTIDAD_MAXIMA}."})
     fecha = forms.DateField(
-        label="Fecha", widget=forms.DateInput(attrs={'type': 'date'}),
+        label="Fecha",
+        # El formato ISO es el único que acepta un <input type="date"> del celular.
+        widget=forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
         error_messages={'required': "Indica la fecha.",
                         'invalid': "La fecha no es válida."})
     observaciones = forms.CharField(

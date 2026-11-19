@@ -26,6 +26,10 @@ class VistasMovilTest(TestCase):
         self.assertContains(respuesta, 'name="viewport"')
         self.assertContains(respuesta, 'Simulacro Saber 11')
 
+    def test_formulario_de_entrada_trae_la_fecha_de_hoy_en_formato_iso(self):
+        respuesta = self.client.get(reverse('inventario_movil:entrada'))
+        self.assertContains(respuesta, f'value="{date.today().isoformat()}"')
+
     def test_busqueda_sin_resultados_muestra_mensaje(self):
         respuesta = self.client.get(reverse('inventario_movil:existencias'), {'q': 'zzz'})
         self.assertContains(respuesta, "No hay artículos")
