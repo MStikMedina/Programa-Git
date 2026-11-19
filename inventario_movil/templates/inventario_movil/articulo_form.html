@@ -1,0 +1,16 @@
+{% extends 'inventario_movil/base_movil.html' %}
+{% block titulo %}Nuevo artículo{% endblock %}
+{% block encabezado %}Nuevo artículo{% endblock %}
+{% block contenido %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% for campo in formulario %}
+    <div class="campo">
+      <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+      {{ campo }}
+      {% for error in campo.errors %}<div class="error">{{ error }}</div>{% endfor %}
+    </div>
+  {% endfor %}
+  <button class="boton" type="submit">Guardar artículo</button>
+</form>
+{% endblock %}

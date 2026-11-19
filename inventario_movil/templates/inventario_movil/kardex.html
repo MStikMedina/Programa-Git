@@ -1,0 +1,24 @@
+{% extends 'inventario_movil/base_movil.html' %}
+{% block titulo %}Kardex{% endblock %}
+{% block encabezado %}{{ articulo.nombre }}{% endblock %}
+{% block contenido %}
+<h3>Existencias por bodega</h3>
+{% for stock in existencias %}
+  <div class="tarjeta"><div>{{ stock.bodega.nombre }}</div><div class="cantidad">{{ stock.cantidad }}</div></div>
+{% empty %}
+  <p>Aún no hay existencias de este artículo.</p>
+{% endfor %}
+<h3>Movimientos (kardex)</h3>
+{% for mov in movimientos %}
+  <div class="tarjeta">
+    <div>
+      <strong class="{% if mov.tipo == 'ENTRADA' %}entrada{% else %}salida{% endif %}">{{ mov.get_tipo_display }} {% if mov.tipo == 'ENTRADA' %}+{% else %}−{% endif %}{{ mov.cantidad }}</strong><br>
+      <small>{{ mov.fecha|date:"d/m/Y" }} · {{ mov.bodega.nombre }}</small>
+      {% if mov.observaciones %}<br><small>{{ mov.observaciones }}</small>{% endif %}
+    </div>
+    <div><small>Saldo</small><br><strong>{{ mov.saldo_resultante }}</strong></div>
+  </div>
+{% empty %}
+  <p>Sin movimientos todavía.</p>
+{% endfor %}
+{% endblock %}
