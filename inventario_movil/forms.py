@@ -27,6 +27,7 @@ class ArticuloForm(forms.ModelForm):
     class Meta:
         model = Articulo
         fields = ['categoria', 'referencia', 'grado', 'stock_minimo']
+        labels = {'categoria': "Categoría", 'stock_minimo': "Stock mínimo"}
 
     def clean_categoria(self):
         return _validar_texto_limpio(self.cleaned_data['categoria'], "La categoría")
