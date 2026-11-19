@@ -44,3 +44,38 @@ python manage.py runserver      # http://127.0.0.1:8000/
 
 Base de datos: SQLite por defecto; para PostgreSQL (como en AAMO) basta cambiar `DATABASES`
 en `config/settings.py`. La tabla es la misma `log_terceros` del proyecto real.
+
+
+---
+
+# Inventario móvil (GA7-220501096-AA3)
+
+Módulo **móvil** (web móvil *mobile-first* instalable como PWA) del inventario de logística de AAMO,
+hecho con Python y Django. Se abre en `/movil/`.
+
+## Historias de usuario
+
+| HU | Pantalla | Qué hace |
+|----|----------|----------|
+| HU-01 | Existencias | Lista de tarjetas con búsqueda, filtro por bodega y alerta de bajo mínimo |
+| HU-02 | Entrada | Registra una entrada y suma el stock |
+| HU-03 | Salida | Registra una salida; no permite sacar más de lo que hay |
+| HU-04 | Kardex | Historial de movimientos del artículo con saldo |
+| HU-05 | Artículo | Crea un artículo (categoría, referencia, grado 0°–11°, mínimo) |
+
+## Estructura
+
+* `models.py`: `Bodega`, `Articulo`, `Stock`, `Movimiento` (kardex).
+* `servicios.py`: única puerta de escritura del stock (transacción atómica).
+* `forms.py`: validaciones (fechas, números, textos, caracteres especiales, longitudes).
+* `views.py` / `urls.py` / `templates/`: pantallas móviles, manifiesto PWA y service worker.
+
+## Ejecución
+
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py cargar_demo     # datos de ejemplo
+python manage.py runserver       # abrir http://localhost:8000/movil/
+python manage.py test            # 66 pruebas
+```
